@@ -2,18 +2,17 @@
 Option Explicit
  
 function getNamePrefix(ArgArray)
-  Dim namePart
+  Dim namePart, dirPart
   Dim nameArray()
   for i=0 to ArgArray.Count-1
     if i = 0 then
-      namePart = Replace(Replace(Replace(LCase(Trim(ArgArray(i))),"\","_"),":","_"),".qvd","")
-    else
-      namePart = objFSO.getBaseName(Trim(ArgArray(i)))
+      dirPart = Replace(Replace(LCase(objFSO.getParentFolderName(ArgArray(i))),"\","."),":","")
     end if
+    namePart = objFSO.getBaseName(Trim(ArgArray(i)))
     ReDim Preserve nameArray(i + 1)
     nameArray(i) = namePart
   next 
-  getNamePrefix = Join(nameArray,"_")
+  getNamePrefix = Join(nameArray,"_") & "_" &dirPart
 
 end function
 
@@ -75,7 +74,7 @@ if targetPath = "" then
   outFile.SaveToFile targetPath & ".qvs", 2
   Set outFile = Nothing
 
-  objFSO.CopyFile objFSO.GetAbsolutePathName("Template.qvw"),targetPath & ".qvw"
+  objFSO.CopyFile objFSO.BuildPath(rootPath,"Template.qvw"),targetPath & ".qvw"
 end if  
 
 Set WshShell = CreateObject("WScript.Shell")
