@@ -31,7 +31,17 @@ targetPath = ""
 
 For Each f In objFSO.GetFolder(objFSO.BuildPath(rootPath,"Data")).Files
   If LCase(objFSO.GetExtensionName(f.Name)) = "qvs" Then
-    text = f.OpenAsTextStream.ReadAll
+    Dim objStream, strData
+    Set objStream = CreateObject("ADODB.Stream")
+    objStream.CharSet = "utf-8"
+    objStream.Open
+    objStream.LoadFromFile(f.path)
+
+    text = objStream.ReadText()
+
+    objStream.Close
+    Set objStream = Nothing
+
     text = replace(replace(text,chr(10),""),chr(13),"")
     notInFile = False
     for i=0 to WshArguments.Count-1
@@ -49,6 +59,7 @@ For Each f In objFSO.GetFolder(objFSO.BuildPath(rootPath,"Data")).Files
 Next
 
 if targetPath = "" then
+  WSCript.Echo "Not fourd"
   tempName = objFSO.GetTempName()
   tempName = Replace(tempName,".tmp","")
   tempName = getNamePrefix(WshArguments) & "_" & tempName
@@ -76,6 +87,7 @@ if targetPath = "" then
 
   objFSO.CopyFile objFSO.BuildPath(rootPath,"Template.qvw"),targetPath & ".qvw"
 end if  
+WSCript.Echo targetPath
 
 Set WshShell = CreateObject("WScript.Shell")
 WshShell.Run qvExe & targetPath & ".qvw"
