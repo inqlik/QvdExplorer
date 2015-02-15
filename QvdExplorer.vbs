@@ -59,7 +59,6 @@ For Each f In objFSO.GetFolder(objFSO.BuildPath(rootPath,"Data")).Files
 Next
 
 if targetPath = "" then
-  WSCript.Echo "Not fourd"
   tempName = objFSO.GetTempName()
   tempName = Replace(tempName,".tmp","")
   tempName = getNamePrefix(WshArguments) & "_" & tempName
@@ -77,7 +76,7 @@ if targetPath = "" then
       WScript.Quit
     end if
     baseName = LCase(objFSO.getBaseName(qvdFileName))
-    outFile.WriteText baseName & ":" & vbNewline
+    outFile.WriteText "[" & baseName & "]:" & vbNewline
     outFile.WriteText "LOAD * FROM" & vbNewline
     outFile.WriteText "  [" & qvdFileName & "] (QVD);" & vbNewline & vbNewline 
   next 'end of loop
@@ -87,7 +86,6 @@ if targetPath = "" then
 
   objFSO.CopyFile objFSO.BuildPath(rootPath,"Template.qvw"),targetPath & ".qvw"
 end if  
-WSCript.Echo targetPath
 
 Set WshShell = CreateObject("WScript.Shell")
 WshShell.Run qvExe & targetPath & ".qvw"
