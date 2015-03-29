@@ -76,9 +76,17 @@ if targetPath = "" then
       WScript.Quit
     end if
     baseName = LCase(objFSO.getBaseName(qvdFileName))
-    outFile.WriteText "[" & baseName & "]:" & vbNewline
+    outFile.WriteText baseName & ":" & vbNewline
     outFile.WriteText "LOAD * FROM" & vbNewline
     outFile.WriteText "  [" & qvdFileName & "] (QVD);" & vbNewline & vbNewline 
+    ' Additional metaddata 
+    ' outFile.WriteText "QvdFieldHeader: " & vbNewline
+    ' outFile.WriteText "LOAD FieldName as _META_FieldName," & vbNewline
+    ' outFile.WriteText "  NoOfSymbols as _META_UniqValues " & vbNewline
+    ' outFile.WriteText "    FROM [" & qvdFileName & "] (XmlSimple, Table is [QvdTableHeader/Fields/QvdFieldHeader]);" & vbNewline & vbNewline
+
+
+
   next 'end of loop
 
   outFile.SaveToFile targetPath & ".qvs", 2

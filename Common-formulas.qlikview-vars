@@ -1,0 +1,37 @@
+#SECTION :Dimension's formulas
+---
+set: vDimension
+definition: $(=SubField(Concat(DISTINCT {DimSelection } $Field,','),',',$1))
+description: Formula used as calculated dimension
+---
+set: vDimCondition
+definition: $(=Count(DISTINCT {DimSelection } $Field))>=$1
+description: Condition to show/hide dimension 
+---
+set: vDimensionSelected
+definition: (GetSelectedCount($Field,False(),'DimSelection')>0 AND GetSelectedCount($Field,False(),'DimSelection')<26) 
+description: Do any dimension selected (condition used to show/hide main chart)
+
+#SECTION :Measure's formulas
+---
+set: vMeasure
+definition: Only({Measure$1} _AggrFunc) & '(' & Only({Measure$1} $Field)  & ')' 
+description: Formula used as measure
+---
+set: vMeasureCondition
+definition: NOT IsNull(Only({Measure$1} $Field))
+description: Formula used as measure
+
+#SECTION :Field list formulas
+---
+set: vFieldList
+definition: Aggr(Only({1 <$Field-={_AggrFunc}>} $Field), $Field)
+description: Formula used as measure in field selection lists
+---
+set: vFieldListHierarchical
+definition: Aggr(Only({1 <$Field-={_AggrFunc}>} $Table) & '|' & Only({1 <$Field-={_AggrFunc}>} $Field), $Field, $Table)
+description: Formula used as measure in hierarchicl field selection lists
+---
+set: vFieldToFilter
+definition: $(=If(Count({1} $Field)>1,Only({ListBoxField} $Field)))
+description: Formula used in dynamic listbox to filter field value
