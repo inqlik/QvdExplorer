@@ -1,7 +1,7 @@
 #SECTION :Dimension's formulas
 ---
 set: vDimension
-definition: $(=SubField(Concat(DISTINCT {DimSelection } $Field,','),',',$1))
+definition: $(='[' & SubField(Concat(DISTINCT {DimSelection } $Field,','),',',$1) & ']')
 description: Formula used as calculated dimension
 ---
 set: vDimCondition
@@ -15,7 +15,7 @@ description: Do any dimension selected (condition used to show/hide main chart)
 #SECTION :Measure's formulas
 ---
 set: vMeasure
-definition: Only({Measure$1} _AggrFunc) & '(' & Only({Measure$1} $Field)  & ')' 
+definition: Only({Measure$1} _AggrFunc) & '([' & Only({Measure$1} $Field)  & '])' 
 description: Formula used as measure
 ---
 set: vMeasureCondition
@@ -33,5 +33,5 @@ definition: Aggr(Only({1 <$Field-={_AggrFunc}>} $Table) & '|' & Only({1 <$Field-
 description: Formula used as measure in hierarchicl field selection lists
 ---
 set: vFieldToFilter
-definition: $(=If(Count({1} $Field)>1,Only({ListBoxField} $Field)))
+definition: $(=If(Count({1} $Field)>1,'[' & Only({ListBoxField} $Field) & ']'))
 description: Formula used in dynamic listbox to filter field value
