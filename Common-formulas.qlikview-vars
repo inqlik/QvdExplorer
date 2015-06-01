@@ -1,37 +1,37 @@
 #SECTION :Dimension's formulas
 ---
-set: vDimension
+set: vQvdExplorerDimension
 definition: $(='[' & SubField(Concat(DISTINCT {DimSelection } $Field,','),',',$1) & ']')
 description: Formula used as calculated dimension
 ---
-set: vDimCondition
+set: vQvdExplorerDimCondition
 definition: $(=Count(DISTINCT {DimSelection } $Field))>=$1
 description: Condition to show/hide dimension 
 ---
-set: vDimensionSelected
+set: vQvdExplorerDimensionSelected
 definition: (GetSelectedCount($Field,False(),'DimSelection')>0 AND GetSelectedCount($Field,False(),'DimSelection')<26) 
 description: Do any dimension selected (condition used to show/hide main chart)
 
 #SECTION :Measure's formulas
 ---
-set: vMeasure
+set: vQvdExplorerMeasure
 definition: Only({Measure$1} _AggrFunc) & '([' & Only({Measure$1} $Field)  & '])' 
 description: Formula used as measure
 ---
-set: vMeasureCondition
+set: vQvdExplorerMeasureCondition
 definition: NOT IsNull(Only({Measure$1} $Field))
 description: Formula used as measure
 
 #SECTION :Field list formulas
 ---
-set: vFieldList
+set: vQvdExplorerFieldList
 definition: Aggr(Only({1 <$Field-={_AggrFunc}>} $Field), $Field)
 description: Formula used as measure in field selection lists
 ---
-set: vFieldListHierarchical
+set: vQvdExplorerFieldListHierarchical
 definition: Aggr(Only({1 <$Field-={_AggrFunc}>} $Table) & '|' & Only({1 <$Field-={_AggrFunc}>} $Field), $Field, $Table)
 description: Formula used as measure in hierarchicl field selection lists
 ---
-set: vFieldToFilter
+set: vQvdExplorerFieldToFilter
 definition: $(=If(Count({1} $Field)>1,'[' & Only({ListBoxField} $Field) & ']'))
 description: Formula used in dynamic listbox to filter field value

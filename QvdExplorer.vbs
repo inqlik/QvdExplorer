@@ -76,7 +76,7 @@ if targetPath = "" then
       WScript.Quit
     end if
     baseName = LCase(objFSO.getBaseName(qvdFileName))
-    outFile.WriteText baseName & ":" & vbNewline
+    outFile.WriteText "[" &baseName & "]:" & vbNewline
     outFile.WriteText "LOAD * FROM" & vbNewline
     outFile.WriteText "  [" & qvdFileName & "] (QVD);" & vbNewline & vbNewline 
     ' Additional metaddata 
