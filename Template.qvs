@@ -1,0 +1,14 @@
+Functions:
+LOAD * INLINE [
+    _AggrFunc
+    Sum
+    Count
+    NullCount
+    NumericCount
+    Avg
+    Max
+    Min
+    MaxString
+    MinString
+];
+

@@ -67,7 +67,6 @@ if targetPath = "" then
   Set outFile = CreateObject("ADODB.Stream")
   outFile.Open
   outFile.CharSet = "utf-8"
-  'outFile.WriteText targetPath & vbNewline
 
   for i=0 to WshArguments.Count-1
     qvdFileName=Trim(WshArguments(i))
@@ -79,16 +78,15 @@ if targetPath = "" then
     outFile.WriteText "[" &baseName & "]:" & vbNewline
     outFile.WriteText "LOAD * FROM" & vbNewline
     outFile.WriteText "  [" & qvdFileName & "] (QVD);" & vbNewline & vbNewline 
-    ' Additional metaddata 
-    ' outFile.WriteText "QvdFieldHeader: " & vbNewline
-    ' outFile.WriteText "LOAD FieldName as _META_FieldName," & vbNewline
-    ' outFile.WriteText "  NoOfSymbols as _META_UniqValues " & vbNewline
-    ' outFile.WriteText "    FROM [" & qvdFileName & "] (XmlSimple, Table is [QvdTableHeader/Fields/QvdFieldHeader]);" & vbNewline & vbNewline
-
-
 
   next 'end of loop
-
+  Dim templateStream
+  Set templateStream = CreateObject("ADODB.Stream")
+  templateStream.CharSet = "utf-8"
+  templateStream.Open
+  templateStream.LoadFromFile objFSO.BuildPath(rootPath,"Template.qvs")
+  outFile.WriteText templateStream.ReadText
+  templateStream.Close
   outFile.SaveToFile targetPath & ".qvs", 2
   Set outFile = Nothing
 
